@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.4-apache
 
 MAINTAINER VuNT "nguyenthachvu.vn@gmail.com"
 
@@ -24,18 +24,9 @@ RUN pecl install imagick && docker-php-ext-enable imagick
 
 RUN set -eux; \
     docker-php-ext-install pdo pdo_mysql mysqli; \
-    docker-php-ext-configure gd \
-            --prefix=/usr \
-            --with-jpeg \
-            --with-freetype \
-            --enable-gd-native-ttf \
-            --with-freetype-dir=/usr/include/freetype2 \
-            --with-png-dir=/usr/include \
-            --with-jpeg-dir=/usr/include \
-            ; \
-    docker-php-ext-install gd iconv mcrypt mbstring; \
-    docker-php-ext-enable gd; \
-    php -r 'var_dump(gd_info());'
+        docker-php-ext-configure gd \
+        --with-jpeg=/usr/include/ \
+        --with-freetype=/usr/include/;
 
 RUN a2enmod rewrite
 
